@@ -15,30 +15,46 @@ def lex(code: str) -> Iterable[Token]:
     array = []
     keywords = {'IF', 'THEN', 'ENDIF', 'FOR', 'NEXT', 'GOSUB', 'RETURN'}
     token_specification = [
-        ('NUMBER',   r'\d+(\.\d*)?'),  # Integer or decimal number
-        ('ASSIGN',   r':='),           # Assignment operator
-        ('END',      r';'),            # Statement terminator
-        ('ID',       r'[A-Za-z]+'),    # Identifiers
-        ('OP',       r'[+\-*/]'),      # Arithmetic operators
-        ('NEWLINE',  r'\n'),           # Line endings
-        ('SKIP',     r'[ \t]+'),       # Skip over spaces and tabs
-        ('MISMATCH', r'.'),            # Any other character
+        ('NUMBER',   	r'[+-]?\d+(\.\d*)?'),  		# Integer or decimal number
+        ('STRING',		r'"[A-Za-z-?>%!\s\\"]+"'),	# Strings
+        ('NAME',       	r'[A-Za-z-?>%!+\.]+'),    		# Identifiers
+        ('LPAR',		r'\('),						# Identificador (
+        ('RPAR',		r'\)'),						# Identificador )
+        ('BOOL',		r'#t|#f'),					# Boolean
+        ('OP',       	r'[+\-*/]'),      			# Arithmetic operators
+        ('QUOTE',       r"'"),      				# Quote
+        ('COMMENT',     r";;.*[^\n]"),      		# Comments
+        ('CHAR',		r'#\\a|#\\Backspace'),		# Char
+
+        ('NEWLINE',  	r'\n'),           			# Line endings
+        ('SKIP',     	r'[ \t]+'),       			# Skip over spaces and tabs
+        ('ASSIGN',   	r'='),           			# Assignment operator
+        ('END',      	r';'),            			# Statement terminator
+        ('ERROR', 		r'.'),            			# Any other character
     ]
     tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specification)
     for mo in re.finditer(tok_regex, code):
         kind = mo.lastgroup
         value = mo.group()
         if kind == 'NUMBER':
-            value = float(value) if '.' in value else int(value)
-    #     elif kind == 'ID' and value in keywords:
-    #         kind = value
+            value = value
+        elif kind == 'NAME' and value in keywords:
+            kind = value
+        elif kind == 'LPAR':
+            value = value
+        elif kind == 'RPAR':
+            value = value
+        elif kind == 'COMMENT':
+            continue
         elif kind == 'NEWLINE':
             continue
         elif kind == 'SKIP':
             continue
-    #     elif kind == 'MISMATCH':
-    #         raise RuntimeError(f'{value!r}')
+        elif kind == 'ERROR':
+        	print("EROOOOOOOOOOOOOOOO")
+            # raise RuntimeError(f'{value!r}')
         array.append(Token(kind, value))
     
+    print(array)
     # return [Token('INVALIDA', 'valor inválido')]
     return array

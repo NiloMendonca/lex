@@ -71,35 +71,35 @@ class TestLexemas:
     def test_classifica_tipos_em_caso_simples(self, kinds):
         assert kinds('(max x y)') == ['LPAR', 'NAME', 'NAME', 'NAME', 'RPAR']
 
-    # def test_encontra_lexemas_de_identificadores(self, simple_lex):
-    #     assert simple_lex('x foo-bar odd? str->int %foo set-value!', kind='NAME')
+    def test_encontra_lexemas_de_identificadores(self, simple_lex):
+        assert simple_lex('x foo-bar odd? str->int %foo set-value!', kind='NAME')
 
-    # def test_encontra_lexemas_numéricos(self, simple_lex):
-    #     assert simple_lex('1 2.0 -1 3.14 42.0 +100', kind='NUMBER')
+    def test_encontra_lexemas_numéricos(self, simple_lex):
+        assert simple_lex('1 2.0 -1 3.14 42.0 +100', kind='NUMBER')
 
-    # def test_encontra_lexemas_de_caracteres(self, simple_lex):
-    #     assert simple_lex(r'#\a #\Backspace', kind='CHAR')
+    def test_encontra_lexemas_de_caracteres(self, simple_lex):
+        assert simple_lex(r'#\a #\Backspace', kind='CHAR')
 
-    # def test_encontra_lexemas_valores_especiais(self, simple_lex):
-    #     assert simple_lex('#t #f', kind='BOOL')
+    def test_encontra_lexemas_valores_especiais(self, simple_lex):
+        assert simple_lex('#t #f', kind='BOOL')
 
-    # def test_encontra_lexemas_de_strings(self, single):
-    #     assert single('"hello-world"') == ("STRING", '"hello-world"')
-    #     assert single('"hello world"') == ("STRING", '"hello world"')
+    def test_encontra_lexemas_de_strings(self, single):
+        assert single('"hello-world"') == ("STRING", '"hello-world"')
+        assert single('"hello world"') == ("STRING", '"hello world"')
         
-    # def test_aceita_escape_de_strings(self, single):
-    #     assert single(r'"hello \"world\""') == ("STRING", r'"hello \"world\""')
+    def test_aceita_escape_de_strings(self, single):
+        assert single(r'"hello \"world\""') == ("STRING", r'"hello \"world\""')
 
-    # def test_aceita_símbolo_de_quote(self, values):
-    #     assert values("'(+ 1 2)") == ["'", "(", "+", "1", "2", ")"]
+    def test_aceita_símbolo_de_quote(self, values):
+        assert values("'(+ 1 2)") == ["'", "(", "+", "1", "2", ")"]
 
-    # def test_aceita_comentários(self, single):
-    #     assert single("x ;; comentário") == ('NAME', 'x')
+    def test_aceita_comentários(self, single):
+        assert single("x ;; comentário") == ('NAME', 'x')
 
-    # def test_ignora_quebras_de_linha(self, lex):
-    #     assert lex("(sin\nx)") == [('LPAR', '('), ('NAME', 'sin'), ('NAME', 'x'), ('RPAR', ')')] 
+    def test_ignora_quebras_de_linha(self, lex):
+        assert lex("(sin\nx)") == [('LPAR', '('), ('NAME', 'sin'), ('NAME', 'x'), ('RPAR', ')')] 
 
-    # def test_identificadores_especiais(self, simple_lex):
-    #     assert simple_lex('+ - ...', kind='NAME')
+    def test_identificadores_especiais(self, simple_lex):
+        assert simple_lex('+ - ...', kind='NAME')
 
 
