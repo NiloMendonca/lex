@@ -24,7 +24,7 @@ def lex(code: str) -> Iterable[Token]:
         ('OP',       	r'[+\-*/]'),      			# Arithmetic operators
         ('QUOTE',       r"'"),      				# Quote
         ('COMMENT',     r";;.*[^\n]"),      		# Comments
-        ('CHAR',		r'#\\a|#\\Backspace'),		# Char
+        ('CHAR',		r'#\\[A-Za-z]*'),			# Char
 
         ('NEWLINE',  	r'\n'),           			# Line endings
         ('SKIP',     	r'[ \t]+'),       			# Skip over spaces and tabs
@@ -36,14 +36,8 @@ def lex(code: str) -> Iterable[Token]:
     for mo in re.finditer(tok_regex, code):
         kind = mo.lastgroup
         value = mo.group()
-        if kind == 'NUMBER':
-            value = value
-        elif kind == 'NAME' and value in keywords:
+        if kind == 'NAME' and value in keywords:
             kind = value
-        elif kind == 'LPAR':
-            value = value
-        elif kind == 'RPAR':
-            value = value
         elif kind == 'COMMENT':
             continue
         elif kind == 'NEWLINE':
@@ -51,8 +45,7 @@ def lex(code: str) -> Iterable[Token]:
         elif kind == 'SKIP':
             continue
         elif kind == 'ERROR':
-        	print("EROOOOOOOOOOOOOOOO")
-            # raise RuntimeError(f'{value!r}')
+            raise RuntimeError(f'{value!r}')
         array.append(Token(kind, value))
     
     print(array)
